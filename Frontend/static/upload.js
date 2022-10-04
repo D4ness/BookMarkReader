@@ -1,6 +1,7 @@
-const url = '/books'
-const form = document.querySelector('form')
-
+const url = '/api/books'
+const form = document.querySelector('#form')
+console.log(form)
+console.log("upload.js")
 form.addEventListener('submit', (e) => {
   e.preventDefault()
 

@@ -29,6 +29,9 @@ mimetypes.add_type('application/javascript', '.js')
 treinetic_templates = Jinja2Templates(
     directory=f"{pathlib.Path(__file__).parent.parent.resolve()}/Frontend/distTreinetic/sample")
 
+static_templates = Jinja2Templates(
+    directory=f"{pathlib.Path(__file__).parent.parent.resolve()}/Frontend/static")
+
 services = get_services()
 
 app.include_router(book_router)
@@ -42,17 +45,22 @@ app.include_router(bookmark_router)
 #     # print(bkmks_orms[0])
 #     return bkmks_orms
 
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return static_templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/reader", response_class=HTMLResponse)
-async def reader(request: Request):
-    return treinetic_templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/reader/{file_uri}", response_class=HTMLResponse)
+async def reader(request: Request, file_uri):
+    return treinetic_templates.TemplateResponse("reader.html", {"request": request})
 
 
-app.mount(f"/sample",
+# SUCCESS http://localhost:8000/sample/index.html
+app.mount(f"/reader",
           StaticFiles(directory=f"{pathlib.Path(__file__).parent.parent.resolve()}/Frontend/distTreinetic/sample"),
           name="sample")
 
-app.mount(f"/static", StaticFiles(directory=f"{pathlib.Path(__file__).parent.parent.resolve()}/Frontend/static"),
+app.mount(f"/", StaticFiles(directory=f"{pathlib.Path(__file__).parent.parent.resolve()}/Frontend/static"),
           name="static")
 # app.include_router(books_router, dependencies=Depends(services))
 

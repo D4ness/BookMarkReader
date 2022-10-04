@@ -26,7 +26,8 @@ def md5(fname) -> str:
 
 
 def get_book_dto(book: Book) -> BookDto:
-    url = book.bookfile.path
+    # url = book.bookfile.path
+    url = f"reader/{book.bookfile.path}"
     return BookDto(id=book.id,
                    title=book.title,
                    last_read_page=book.last_read_page,
@@ -42,8 +43,8 @@ def get_book_dto(book: Book) -> BookDto:
 
 
 async def save_to_file_storage(recv_file) -> str:
-    out_file_path = f"/FileStorage/{random.randint(10 ** 8, 10 ** 9)}{recv_file.filename}"
-    full_path = str(DIR) + out_file_path
+    out_file_path = f"{random.randint(10 ** 8, 10 ** 9)}{recv_file.filename}"
+    full_path = str(DIR) + "/FileStorage/" + out_file_path
     async with aiofiles.open(full_path, 'wb') as out_file:
         await recv_file.seek(0)
         while content := await recv_file.read(1024):  # async read chunk

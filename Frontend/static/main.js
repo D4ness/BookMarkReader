@@ -8,7 +8,7 @@ let books = response.then((response) => {
     for (const book of r){
     console.log(book)
         document.getElementById("bookList")
-        .innerHTML+=`<li><a href="/reader/${book.id}">${book.title}</a></li>`;
+        .innerHTML+=`<li><a href="/${book.file_url}">${book.title}</a></li>`;
 
 }
     console.log(r)
